@@ -1,29 +1,73 @@
 # Unit Tests
 
-## Defination
-Unit test is fast, stable, isolated tests
-### Good unit test
-* Fast
-* Stable
-* Isolated
-* Maintainable
-* Readable
+## 定义
+    Unit test 是一段代码, 它可以快速, 稳定, 独立的调用被测试的Unit, 并对**单个**最终结果进行检验.
+### 什么是一个好的单元测试
+* 快速
+* 稳定
+* 完全隔离
+  * 不可有真实依赖物, 例如系统时间，真实的文件系统，或者一个真实的数据库
+  * 独立于其他单元测试
+* 可维护性
+* 可读性
 
+## Unit test的好处
+* 更好的理解需求
+* 促使写出更好更以维护的代码
+* 提高代码的质量
+* 重构的时候，可以在一定程度上保证重构的正确性
 
-## Good things for Unit test
-* Better understanding of requirement
-* Better code design(easy to write unit tests)
-* Improve code quality
-* Easy to refactoring in furture(If your unit test is based on interface)
+## 如何进行好的Unit test命名
+    目前来说，本人觉得比较好的Unit test的命名为以下两种。 
+    如果大家有好的命名，请不吝赐教。
+    如果在给一个UT命名的时候，发现很难用一句话写出命名，说明这个UT里面做了太多的事情，应该拆分成多个UT
 
+1. 三元素命名: [UnitOfWorkName]\_[SenarioUnderTest]\_[ExpectedBehavior]
+   1. UnitOfWorkName: 被测试的一个方法，一组方法，或者一个类
+   2. SenarioUnderTest: 假设的测试条件，例如 EmailIsRegistered
+   3. ExpectedBehavior: 对于被测试单元的行为预期, 例如：ReturnFalse, CallThirdAPI
+   4. Examples
+      1. IsValidFileName_BadExtension_ReturnFalse()
+2. 自然语言命名: [UnitOfWorkName]_[DescriptionSentence]
+   1. UnitOfWorkName: 被测试的一个方法，一组方法，或者一个类
+   2. DescriptionSentence: 一个句子，用于描述测试内容
+   3. Examples:
+      1. IsValidFileName_Should_return_false_case_the_extension_of_file_is_not_exist()
 
-## Best practice of Unit test
+## Unit test三大步骤
+    一般在UT内都会分成三个小块
 
-## Artifact in Unit test
+1. Arrange: 创建必须的对象并进行设置，Mock掉必要的依赖
+2. Act:     调用被测试单元
+3. Assert:  断言某个事情是预期的
 
-## How to do unit test in the team
+```C#
+[Test]
+public void IsValidFileName_Should_return_false_case_the_extension_of_file_is_not_exist()
+{
+    // Arrange
+    FileHelper fileHelper = new FileHelper();
+
+    // Act
+    var result = fileHelper.IsValidFileName("fileNameWithoutExtesion");
+
+    // Assert
+    Assert.False(result);
+}
+```
+
+## Unit test的最佳实践
+
+## 如何写出可维护的单元测试
+
+## 如何在团队中推行Unit test
+
+## 如何在现有项目中开始单元测试
 
 ## Discussion
-### Is the unit of unit test more smaller, more better?
-No, more bigger of the unit, the result for the 
+### 测试的单元是否越小越好?
+> 不是，如果你试图将工作单元缩到最小，最终会不得不伪造一堆东西，这些东西并不是最终的结果，只是生成最终结果的中间状态。
+> 
+> 因此单纯的将测试单元缩小没有意义，我们应该对最终结果进行单元测试。如果发现无法对最终结果进行单元测试，这说明一个方法内部做了太多的事情，这些代码需要进行一些重构。
+
 ### Question 2
